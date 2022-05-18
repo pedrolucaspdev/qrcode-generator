@@ -41,7 +41,7 @@ async function downloadQrImage ($url) {
     title: 'Enter your filename',
     input: 'text',
     inputLabel: 'Your Filename',
-    inputPlaceholder: 'Insert your filename...',
+    inputPlaceholder: 'Enter a name for the file ...',
     showCancelButton: true,
     inputValidator: (value) => {
       if (!value) {
@@ -66,7 +66,7 @@ async function downloadQrImage ($url) {
 
 async function readQr () {
     const { value: file } = await Swal.fire({
-      title: 'Insert Filename',
+      title: 'Select a file',
       input: 'file',
       inputAttributes: {
         'accept': 'image/*',
@@ -75,26 +75,26 @@ async function readQr () {
 
 
     if (file) {
-    var form = new FormData();
-    form.append("file", file, file.name);
-    
-    var settings = {
-      "url": "http://api.qrserver.com/v1/read-qr-code/",
-      "method": "POST",
-      "timeout": 0,
-      "dataType": "json",                 
-      "processData": false,
-      "mimeType": "multipart/form-data",
-      "contentType": false,
-      "data": form
-    };
-    
-    $.ajax(settings).done(function (response) {
-      Swal.fire(
-        'Message Returned',
-        response[0]['symbol'][0]['data'],
-        'success'
-      )
-    });
+      var form = new FormData();
+      form.append("file", file, file.name);
+      
+      var settings = {
+        "url": "http://api.qrserver.com/v1/read-qr-code/",
+        "method": "POST",
+        "timeout": 0,
+        "dataType": "json",                 
+        "processData": false,
+        "mimeType": "multipart/form-data",
+        "contentType": false,
+        "data": form
+      };
+      
+      $.ajax(settings).done(function (response) {
+        Swal.fire(
+          'Message Returned',
+          response[0]['symbol'][0]['data'],
+          'success'
+        )
+      });
   }
 }
