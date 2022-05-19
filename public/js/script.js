@@ -29,10 +29,12 @@ async function generateQr () {
             return 'You need to select a file!'
           }
         }
+      }).then((result) => {
+        if(result.isConfirmed) {
+          var url = 'https://api.qrserver.com/v1/create-qr-code/?data='+text+'';
+          downloadQrImage(url)    
+        }
       })
-
-      var url = 'https://api.qrserver.com/v1/create-qr-code/?data='+text+'';
-      downloadQrImage(url)
     }
 }
 
@@ -65,9 +67,11 @@ async function downloadQrImage ($url) {
 }
 
 async function readQr () {
+
     const { value: file } = await Swal.fire({
       title: 'Select a file',
       input: 'file',
+      showCancelButton: true,
       inputAttributes: {
         'accept': 'image/*',
       }
@@ -82,19 +86,32 @@ async function readQr () {
         "url": "http://api.qrserver.com/v1/read-qr-code/",
         "method": "POST",
         "timeout": 0,
-        "dataType": "json",                 
+        "dataType": "json",            
         "processData": false,
         "mimeType": "multipart/form-data",
         "contentType": false,
-        "data": form
+        "data": form,
       };
       
-      $.ajax(settings).done(function (response) {
-        Swal.fire(
-          'Message Returned',
-          response[0]['symbol'][0]['data'],
-          'success'
-        )
-      });
+      const result = $.ajax(settings).done(function (response) {
+      
+        if(response[0]['symbol'][0]['data'] === null) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Invalid file',
+            text: 'could not detect the qr code, try to leave as visible as possible and try again! ',
+          })
+        } else {
+            Swal.fire(
+              'Message below',
+              response[0]['symbol'][0]['data'], 
+              'success'
+            ) 
+          }
+    })
+    
   }
+
 }
+
+
