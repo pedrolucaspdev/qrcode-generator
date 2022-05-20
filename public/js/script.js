@@ -1,3 +1,4 @@
+// Generate QR Code
 async function generateQr () {
     const { value: text } = await Swal.fire({
         input: 'textarea',
@@ -13,15 +14,16 @@ async function generateQr () {
           }
         }
     })
-      
+
+    // Check input message
     if (text) {
-      Swal.fire({
+        Swal.fire({
         title: 'QR Code, Done!',
         text: 'Choose an option',
         imageUrl: 'https://api.qrserver.com/v1/create-qr-code/?data='+text+'',
         imageWidth: 250,
         imageHeight: 200,
-        confirmButtonText: 'Download', 
+        confirmButtonText: 'Download',
         cancelButtonText: 'Exit',
         showCancelButton: true,
         inputValidator: (value) => {
@@ -32,12 +34,13 @@ async function generateQr () {
       }).then((result) => {
         if(result.isConfirmed) {
           var url = 'https://api.qrserver.com/v1/create-qr-code/?data='+text+'';
-          downloadQrImage(url)    
+          downloadQrImage(url)
         }
       })
     }
 }
 
+// Download the QR Image Generated
 async function downloadQrImage ($url) {
   const { value: filename } = await Swal.fire({
     title: 'Enter your filename',
@@ -52,6 +55,7 @@ async function downloadQrImage ($url) {
     }
   })
 
+  // Checks to see if it contains the file name
   if (filename) {
     const image = await fetch($url)
     const imageBlog = await image.blob()
@@ -66,6 +70,7 @@ async function downloadQrImage ($url) {
   }
 }
 
+// Read QR Code
 async function readQr () {
 
     const { value: file } = await Swal.fire({
@@ -77,24 +82,27 @@ async function readQr () {
       }
     })
 
-
+    // Checks to see if it contains a file
     if (file) {
       var form = new FormData();
       form.append("file", file, file.name);
-      
+
+      // Settings of Ajax
       var settings = {
         "url": "http://api.qrserver.com/v1/read-qr-code/",
         "method": "POST",
         "timeout": 0,
-        "dataType": "json",            
+        "dataType": "json",
         "processData": false,
         "mimeType": "multipart/form-data",
         "contentType": false,
         "data": form,
       };
-      
+
+      // Request in API
       const result = $.ajax(settings).done(function (response) {
-      
+
+        // Validation of the uploaded image
         if(response[0]['symbol'][0]['data'] === null) {
           Swal.fire({
             icon: 'error',
@@ -104,14 +112,12 @@ async function readQr () {
         } else {
             Swal.fire(
               'Message below',
-              response[0]['symbol'][0]['data'], 
+              response[0]['symbol'][0]['data'],
               'success'
-            ) 
+            )
           }
     })
-    
   }
-
 }
 
 
