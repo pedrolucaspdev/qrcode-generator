@@ -7,18 +7,18 @@
     <!-- Bootstrap 5.0.2 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/colors.css') }}">
- 
+
     <script rel="stylesheet" type="text/javascript" src="{{ asset('js/script.js')}}"></script>
     <!-- Sweet Alert -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- jQuery Core 3.6.0 -->
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-
     <title>QR Generator - Laravel</title>
 </head>
 <body>
-    <div class="container">
+@include('sweetalert::alert')
+<div class="container">
             <div class="row">
                 <div class="d-grid gap-1 mt-5 btn-group-vertical">
                     <div class="btn-group btn-group-lg mt-5" role="group" aria-label="Basic example">
@@ -39,24 +39,35 @@
                         <a href="https://www.linkedin.com/in/pedro-lucas-carvalho-miranda-5956b01a0/" class="btn btn-primary btn-lg" type="button">
                             <svg class="bi bi-linkedin" xmlns="http://www.w3.org/2000/svg" width="16" heigh="16" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
-                            </svg> 
+                            </svg>
                             Linkedin
                         </a>
                     </div>
                 </div>
 
-            <div class="d-grid gap-3 col-5 mx-auto mt-5">
+            <div class="d-grid gap-3 col-8 mx-auto mt-5">
                 <button type="button" class="btn btn-primary btn-lg" onclick="generateQr()">
-                    Generate&nbsp;
+                    Generate&nbsp;QR Code
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-qr-code" viewBox="0 0 16 16">
                         <path d="M2 2h2v2H2V2Z"/>
                         <path d="M6 0v6H0V0h6ZM5 1H1v4h4V1ZM4 12H2v2h2v-2Z"/>
                         <path d="M6 10v6H0v-6h6Zm-5 1v4h4v-4H1Zm11-9h2v2h-2V2Z"/>
                         <path d="M10 0v6h6V0h-6Zm5 1v4h-4V1h4ZM8 1V0h1v2H8v2H7V1h1Zm0 5V4h1v2H8ZM6 8V7h1V6h1v2h1V7h5v1h-4v1H7V8H6Zm0 0v1H2V8H1v1H0V7h3v1h3Zm10 1h-1V7h1v2Zm-1 0h-1v2h2v-1h-1V9Zm-4 0h2v1h-1v1h-1V9Zm2 3v-1h-1v1h-1v1H9v1h3v-2h1Zm0 0h3v1h-2v1h-1v-2Zm-4-1v1h1v-2H7v1h2Z"/>
                         <path d="M7 12h1v3h4v1H7v-4Zm9 2v2h-3v-1h2v-1h1Z"/>
-                    </svg>   
+                    </svg>
                 </button>
-                <button type="button" class="btn btn-danger btn-lg" onclick="readQr()">Read</button>
+                <form method="POST" action="{{ route('qrimage') }}" enctype="multipart/form-data" class="form-control form-control-lg">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="file" name="image" class="form-control">
+                        </div>
+
+                        <div class="col-md-6">
+                            <button type="submit" class="btn btn-warning">Decode QR Code</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

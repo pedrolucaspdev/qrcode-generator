@@ -20,7 +20,8 @@ async function generateQr () {
         Swal.fire({
         title: 'QR Code, Done!',
         text: 'Choose an option',
-        imageUrl: 'https://api.qrserver.com/v1/create-qr-code/?data='+text+'',
+        // imageUrl: 'https://api.qrserver.com/v1/create-qr-code/?data='+text+'',
+        imageUrl: 'http://127.0.0.1:8000/qrcode/generate/'+text+'',
         imageWidth: 250,
         imageHeight: 200,
         confirmButtonText: 'Download',
@@ -33,7 +34,7 @@ async function generateQr () {
         }
       }).then((result) => {
         if(result.isConfirmed) {
-          var url = 'https://api.qrserver.com/v1/create-qr-code/?data='+text+'';
+          var url = 'http://127.0.0.1:8000/qrcode/generate/'+text+'';
           downloadQrImage(url)
         }
       })
@@ -69,55 +70,3 @@ async function downloadQrImage ($url) {
     document.body.removeChild(link)
   }
 }
-
-// Read QR Code
-async function readQr () {
-
-    const { value: file } = await Swal.fire({
-      title: 'Select a file',
-      input: 'file',
-      showCancelButton: true,
-      inputAttributes: {
-        'accept': 'image/*',
-      }
-    })
-
-    // Checks to see if it contains a file
-    if (file) {
-      var form = new FormData();
-      form.append("file", file, file.name);
-
-      // Settings of Ajax
-      var settings = {
-        "url": "http://api.qrserver.com/v1/read-qr-code/",
-        "method": "POST",
-        "timeout": 0,
-        "dataType": "json",
-        "processData": false,
-        "mimeType": "multipart/form-data",
-        "contentType": false,
-        "data": form,
-      };
-
-      // Request in API
-      const result = $.ajax(settings).done(function (response) {
-
-        // Validation of the uploaded image
-        if(response[0]['symbol'][0]['data'] === null) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Invalid file',
-            text: 'could not detect the qr code, try to leave as visible as possible and try again! ',
-          })
-        } else {
-            Swal.fire(
-              'Message below',
-              response[0]['symbol'][0]['data'],
-              'success'
-            )
-          }
-    })
-  }
-}
-
-
