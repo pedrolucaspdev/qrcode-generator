@@ -13,10 +13,9 @@ Route::get('/qrcode/read', function () {
 });
 
 
-
 Route::controller(QrController::class)->group(function () {
-    Route::get('/qrcode/generate/{message}', 'generateQr');
-    Route::post('/qrcode/read/', 'readQr')->name('qrimage');
+    Route::get('/qrcode/generate/{message}', 'generateQr')->name('qrcode.generate');
+    Route::post('/qrcode/read/', 'readQr')->name('qrcode.read');
 });
 
 

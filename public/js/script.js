@@ -20,8 +20,7 @@ async function generateQr () {
         Swal.fire({
         title: 'QR Code, Done!',
         text: 'Choose an option',
-        // imageUrl: 'https://api.qrserver.com/v1/create-qr-code/?data='+text+'',
-        imageUrl: 'http://127.0.0.1:8000/qrcode/generate/'+text+'',
+        imageUrl: '/qrcode/generate/'+text+'',
         imageWidth: 250,
         imageHeight: 200,
         confirmButtonText: 'Download',
@@ -34,7 +33,7 @@ async function generateQr () {
         }
       }).then((result) => {
         if(result.isConfirmed) {
-          var url = 'http://127.0.0.1:8000/qrcode/generate/'+text+'';
+          var url = '/qrcode/generate/'+text+'';
           downloadQrImage(url)
         }
       })

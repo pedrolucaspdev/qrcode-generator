@@ -56,7 +56,7 @@
                         <path d="M7 12h1v3h4v1H7v-4Zm9 2v2h-3v-1h2v-1h1Z"/>
                     </svg>
                 </button>
-                <form method="POST" action="{{ route('qrimage') }}" enctype="multipart/form-data" class="form-control form-control-lg">
+                <form method="POST" action="{{ route('qrcode.read') }}" enctype="multipart/form-data" class="form-control form-control-lg">
                     @csrf
                     <div class="row">
                         <div class="col-md-6">
